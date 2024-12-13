@@ -1,0 +1,6 @@
+Name,Resistance,Inductance,Resonant_frequency,QES,QMS
+Demo Speaker 1,6.27,0.06,61.03,0.37,4.98
+Demo Speaker 2,8.00,0.08,55.00,0.42,5.20
+Demo Speaker 3,4.50,0.05,75.00,0.33,4.70
+Test Speaker A,5.00,0.07,65.00,0.40,5.10
+Test Speaker B,7.50,0.09,60.00,0.45,4.90

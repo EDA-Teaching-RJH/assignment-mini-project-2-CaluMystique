@@ -2,6 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
+# this program takes information about speaker drivers converts them to a speaker equivalent RLC circuit and then plotes the impedance graph using pyplot
+# this program is intended to be used as a library
+# this program is based on essay i did a year ago and therfore the original equation originates from there
+# maths: https://www.youtube.com/watch?v=kSL2Mw-ZfHY
+
 class Speaker:
     def __init__(self, name, resistance, inductance, Resonant_frequency, QES, QMS):
        #section for defining speaker parameters
@@ -28,10 +33,12 @@ class Speaker:
             Z_s = Af * L1 * 0.001
 
             Z_total = R + Z_s + Z_p
+            if Z_total < 0:
+                raise ValueError("impedance cannot be negative")
         except ZeroDivisionError:
-            print("impossible values")
+            raise ZeroDivisionError("Division by zero encountered in impedance calculation.")
         except ValueError:
-            print("incorrect data format")
+            raise ValueError("Invalid value encountered in impedance calculation.")
 
         return Z_total
 
@@ -57,8 +64,8 @@ class Speaker:
         plt.show()
 
 
-# Example Usage
-if __name__ == "__main__":
+if __name__ == "__main__"
+    #test situation 
     # Create a speaker object with example parameters
     example_speaker = Speaker(name="Demo Speaker", resistance=6.27, inductance=0.06, QES=0.37, QMS=4.98, Resonant_frequency=61.03)
 
