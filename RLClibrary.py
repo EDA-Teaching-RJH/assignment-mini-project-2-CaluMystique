@@ -34,18 +34,21 @@ class Speaker:
         - complex, the impedance at the given frequency.
         """
         
+        Af = 2 * math.pi * frequency
         R = self.resistance
         L1 = self.inductance
-        L2 = self.resistance / (2 * 3.14 * self.fs * self.qes)
-        C = self.qes/(2 * 3.14 * self.fs * self.resistance)
-        damping_factor = self.damping * (self.qms/self.qes)
+        L2 = self.resistance / (2 * math.pi * self.fs * self.qes)
+        C = self.qes / (2 * math.pi * self.fs * self.resistance)
+        damping_factor = R * (self.qms/self.qes)
 
         # Impedance calculation for RLC circuit with damping
-        Z_p = 1/ math.sqrt(1/damping_factor ** 2)+(1/((2 * math.pi * frequency * C * (10 ** -3)) - (2 * math.pi * frequency * L2 * (10 ** -6))) ** 2)
-        Z_s = 2 * math.pi * frequency * L1 * 10 ** -3
-        
+        Z_p = 1 / (math.sqrt((1 / (damping_factor ** 2)) + (((1 / (Af * C)) - (Af * L2)) ** 2)))
+        Z_s = Af * L1 * 0.001
 
-        return R + Z_s + Z_p
+        Z_total = R + Z_s + Z_p
+        
+    
+        return Z_total
 
     def plot_impedance(self, freq_range):
         """
@@ -63,13 +66,15 @@ class Speaker:
 
         # Plot impedance magnitude
         plt.figure(figsize=(10, 6))
-        plt.subplot(2, 1, 1)
         plt.plot(frequencies, magnitudes, label='Magnitude (|Z|)')
+        plt.xscale("log")
         plt.xlabel('Frequency (Hz)')
         plt.ylabel('Impedance Magnitude (Ohms)')
         plt.title(f'Impedance Plot for {self.name}')
         plt.grid(True)
         plt.legend()
+
+        plt.show()
 
 
 # Example Usage
@@ -78,5 +83,5 @@ if __name__ == "__main__":
     example_speaker = Speaker(name="Demo Speaker", resistance=6.27, inductance=0.06, compliance=1e-6, damping=0.05, QES=0.37, QMS=4.98, Resonant_frequency=61.03)
 
     # Plot impedance over a frequency range (20 Hz to 20 kHz)
-    example_speaker.plot_impedance((20, 20000, 10))
+    example_speaker.plot_impedance((20, 20000, 0.5))
 
